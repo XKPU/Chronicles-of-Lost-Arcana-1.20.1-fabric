@@ -2,6 +2,8 @@
   "item.chronicles_of_lost_arcana.angel_staff": "创天使法杖",
   "item.chronicles_of_lost_arcana.angel_staff.lore1": "右键释放选中的魔法；Alt+滚轮切换选中魔法。",
   "item.chronicles_of_lost_arcana.angel_staff.lore2": "Shift+右键打开注入界面（注入消耗奥术残晶）。",
+  "item.chronicles_of_lost_arcana.arcane_crystal_item": "奥术残晶",
+  "item.chronicles_of_lost_arcana.arcane_crystal_item.lore": "食用后直接获得 50 点奥术残晶。",
   "itemgroup.chronicles_of_lost_arcana.magic": "魔法",
 
   "effect.chronicles_of_lost_arcana.wing_flight": "翼·第二位阶·翼行",
@@ -29,6 +31,7 @@
   "message.chronicles_of_lost_arcana.infused": "注入成功：%s",
   "message.chronicles_of_lost_arcana.no_spell_selected": "尚未选中魔法（Shift+右键注入）。",
   "message.chronicles_of_lost_arcana.cast_success": "释放成功：%s",
+  "message.chronicles_of_lost_arcana.spell_cooldown": "%s 冷却中（剩余 %s 秒）",
   "message.chronicles_of_lost_arcana.unknown_spell": "未知的法术。",
 
   "hud.chronicles_of_lost_arcana.no_spell": "（未选中魔法）",

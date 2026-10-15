@@ -32,10 +32,10 @@ public final class ManaHud {
     }
 
     public static void register() {
-        HudRenderCallback.EVENT.register(ManaHud::render);
+        HudRenderCallback.EVENT.register((context, tickDelta) -> render(context));
     }
 
-    private static void render(DrawContext context, float tickDelta) {
+    private static void render(DrawContext context) {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player == null || client.options.hudHidden) {
             return;
@@ -43,7 +43,6 @@ public final class ManaHud {
         if (!ClientManaState.hasReceived()) {
             return;
         }
-
         int mana = ClientManaState.getMana();
         int max = top.pu.mana.ManaComponent.MAX_MANA;
 
@@ -81,14 +80,10 @@ public final class ManaHud {
             context.drawTextWithShadow(client.textRenderer, Text.literal(label),
                     x, y - 12, SPELL_COLOR);
 
-            // 冷却中：名称右侧追加灰色剩余秒数
-            var cooldown = player.getItemCooldownManager();
-            int totalTicks = ClientStaffState.getSelectedCooldownTicks();
-            if (totalTicks > 0 && cooldown.isCoolingDown(player.getMainHandStack().getItem())) {
-                float progress = cooldown.getCooldownProgress(
-                        player.getMainHandStack().getItem(), tickDelta);
-                int remainSeconds = Math.max(1,
-                        (int) Math.ceil(progress * totalTicks / 20.0F));
+            // 冷却中：名称右侧追加灰色剩余秒数（法术冷却按玩家计，服务端同步）
+            int remainingTicks = ClientManaState.getStaffCooldownTicks();
+            if (remainingTicks > 0) {
+                int remainSeconds = Math.max(1, (int) Math.ceil(remainingTicks / 20.0));
                 String cd = " (" + remainSeconds + "s)";
                 context.drawTextWithShadow(client.textRenderer, Text.literal(cd),
                         x + client.textRenderer.getWidth(label), y - 12, 0xFFAAAAAA);

@@ -2,6 +2,8 @@
   "item.chronicles_of_lost_arcana.angel_staff": "Archangel Staff",
   "item.chronicles_of_lost_arcana.angel_staff.lore1": "Right-click to cast the selected spell; Alt+Scroll to switch.",
   "item.chronicles_of_lost_arcana.angel_staff.lore2": "Shift+right-click to open infusion (costs Arcane Crystal Shards).",
+  "item.chronicles_of_lost_arcana.arcane_crystal_item": "Arcane Crystal",
+  "item.chronicles_of_lost_arcana.arcane_crystal_item.lore": "Eating grants 50 Arcane Crystal Shards.",
   "itemgroup.chronicles_of_lost_arcana.magic": "Magic",
 
   "effect.chronicles_of_lost_arcana.wing_flight": "Wing of the Second Rank",
@@ -29,6 +31,7 @@
   "message.chronicles_of_lost_arcana.infused": "Infused: %s",
   "message.chronicles_of_lost_arcana.no_spell_selected": "No spell selected (Shift+right-click to infuse).",
   "message.chronicles_of_lost_arcana.cast_success": "Cast: %s",
+  "message.chronicles_of_lost_arcana.spell_cooldown": "%s is on cooldown (%ss left)",
   "message.chronicles_of_lost_arcana.unknown_spell": "Unknown spell.",
 
   "hud.chronicles_of_lost_arcana.no_spell": "(no spell selected)",

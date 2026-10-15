@@ -23,6 +23,10 @@ public final class ClientManaState {
     private static volatile int mana = 0;
     private static volatile int crystals = 0;
     private static volatile boolean received = false;
+    /** 手持创天使法杖时选中法术的剩余冷却 ticks（0 = 无冷却）。 */
+    private static volatile int staffCooldownTicks = 0;
+    /** 收到同步时的客户端世界时间，用于在同步间隔内插值。 */
+    private static volatile long staffCooldownSyncTime = 0;
 
     private ClientManaState() {
     }
@@ -43,6 +47,25 @@ public final class ClientManaState {
     /** 同步奥术残晶数（非物品资源，仅创天使法杖 UI 可见）。 */
     public static void setCrystals(int value) {
         crystals = value;
+    }
+
+    /** 同步法杖选中法术的剩余冷却 ticks（服务端权威）。 */
+    public static void setStaffCooldown(int ticks) {
+        staffCooldownTicks = Math.max(0, ticks);
+        staffCooldownSyncTime = System.nanoTime();
+    }
+
+    /**
+     * 当前剩余冷却 ticks：以最近同步值为基准按真实时间递减（同步间隔 5 tick 内平滑）。
+     */
+    public static int getStaffCooldownTicks() {
+        int base = staffCooldownTicks;
+        if (base <= 0) {
+            return 0;
+        }
+        long elapsedNanos = System.nanoTime() - staffCooldownSyncTime;
+        long elapsedTicks = elapsedNanos / 50_000_000L;
+        return (int) Math.max(0, base - elapsedTicks);
     }
 
     /** 是否已收到过至少一次同步（避免首包前渲染无意义 HUD）。 */

@@ -31,9 +31,11 @@ public final class CoLAClientNetworking {
                 (client, handler, buf, responseSender) -> {
                     int mana = buf.readInt();
                     int crystals = buf.readInt();
+                    int staffCooldown = buf.readVarInt();
                     client.execute(() -> {
                         ClientManaState.setMana(mana);
                         ClientManaState.setCrystals(crystals);
+                        ClientManaState.setStaffCooldown(staffCooldown);
                     });
                 });
 
@@ -42,10 +44,10 @@ public final class CoLAClientNetworking {
                 (client, handler, buf, responseSender) -> {
                     List<String> list = readInfusions(buf);
                     int selected = buf.readVarInt();
-                    int cooldownTicks = buf.readVarInt();
+                    buf.readVarInt(); // 旧的总冷却字段已废弃（冷却改走 MANA_SYNC_S2C），跳过
                     boolean openEditor = buf.readBoolean();
                     client.execute(() -> {
-                        ClientStaffState.set(list, selected, cooldownTicks);
+                        ClientStaffState.set(list, selected);
                         if (openEditor) {
                             openEditorScreen(client, list, selected);
                         }

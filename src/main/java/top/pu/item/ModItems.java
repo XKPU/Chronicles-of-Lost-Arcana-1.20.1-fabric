@@ -8,9 +8,6 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import top.pu.CoLA;
@@ -27,11 +24,23 @@ public final class ModItems {
                     .maxCount(1)
                     .rarity(Rarity.EPIC)));
 
+    /** 奥术残晶（实体道具）：食用获得 50 点残晶，仅创造获取。 */
+    public static final Item ARCANE_CRYSTAL_ITEM = register("arcane_crystal_item",
+            new ArcaneCrystalItem(new Item.Settings()
+                    .maxCount(16)
+                    .rarity(Rarity.RARE)
+                    .food(new net.minecraft.component.type.FoodComponent.Builder()
+                            .alwaysEdible()
+                            .build())));
+
     /** 自定义创造模式物品组：魔法（图标用法杖）。 */
     public static final ItemGroup MAGIC_GROUP = FabricItemGroup.builder()
                     .displayName(Text.translatable("itemgroup.chronicles_of_lost_arcana.magic"))
                     .icon(() -> new ItemStack(ANGEL_STAFF))
-                    .entries((context, entries) -> entries.add(ANGEL_STAFF))
+                    .entries((context, entries) -> {
+                        entries.add(ANGEL_STAFF);
+                        entries.add(ARCANE_CRYSTAL_ITEM);
+                    })
                     .build();
 
     private static Item register(String path, Item item) {

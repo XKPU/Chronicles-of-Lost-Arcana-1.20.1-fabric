@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "chronicles_of_lost_arcana:item/arcane_crystal_item"
+  }
+}

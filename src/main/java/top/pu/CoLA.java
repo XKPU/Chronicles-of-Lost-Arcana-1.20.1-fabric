@@ -14,6 +14,7 @@ import top.pu.mana.ManaManager;
 import top.pu.network.CoLAServerNetworking;
 import top.pu.network.JumpStateTracker;
 import top.pu.spell.ArcaneCrystals;
+import top.pu.spell.ChestLootInjector;
 import top.pu.spell.ModEntities;
 import top.pu.spell.ModStatusEffects;
 import top.pu.spell.WingFlightTickHandler;
@@ -45,6 +46,9 @@ public class CoLA implements ModInitializer {
 
         // 注册：奥术残晶击杀掉落
         ArcaneCrystals.register();
+
+        // 注册：创天使法杖宝箱战利品注入
+        ChestLootInjector.init();
 
         // 登入时立即同步一次魔力
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->

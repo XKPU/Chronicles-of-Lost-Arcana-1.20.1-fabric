@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import top.pu.mana.ManaManager;
 
 /**
@@ -49,7 +50,7 @@ public final class SpellExecutor {
     /**
      * 通过法术 id 执行（供 CastSpellC2S / 法杖右键调用）。
      *
-     * @param stack 法杖物品（非 null 时按法术冷却设置物品 CD；残晶仅在注入时消耗）
+     * @param stack 法杖物品（非 null 时按法术冷却设置玩家法术 CD；残晶仅在注入时消耗）
      */
     public static boolean execute(ServerPlayerEntity player, String spellId, ItemStack stack) {
         Spell spell = Spells.byId(spellId).orElse(null);
@@ -57,6 +58,11 @@ public final class SpellExecutor {
             return false;
         }
         boolean free = stack == null;
+        // 法术冷却挂在玩家 + 法术上（与法杖无关）
+        if (!free && SpellCooldowns.isCoolingDown(player, spellId)) {
+            sendCooldown(player, spell, SpellCooldowns.remainingTicks(player, spellId));
+            return false;
+        }
         // 残晶仅在注入时消耗，释放法术不消耗
         boolean success = switch (spellId) {
             case "wing_flight" -> executeWingFlight(player, free);
@@ -66,16 +72,23 @@ public final class SpellExecutor {
             case "claw_rend" -> executeClawRend(player, free);
             default -> false;
         };
-        if (success && stack != null && spell.cooldownTicks() > 0) {
-            // 法术冷却挂在该物品上（1.20.1 冷却管理器位于玩家）
-            player.getItemCooldownManager().set(stack.getItem(), spell.cooldownTicks());
+        if (success && !free && spell.cooldownTicks() > 0) {
+            SpellCooldowns.set(player, spellId, spell.cooldownTicks());
         }
         return success;
     }
 
     /** 兼容旧入口：无物品上下文（正常魔力消耗）。 */
     public static boolean execute(ServerPlayerEntity player, String spellId, boolean free) {
-        return switch (spellId) {
+        Spell spell = Spells.byId(spellId).orElse(null);
+        if (spell == null) {
+            return false;
+        }
+        if (SpellCooldowns.isCoolingDown(player, spellId)) {
+            sendCooldown(player, spell, SpellCooldowns.remainingTicks(player, spellId));
+            return false;
+        }
+        boolean success = switch (spellId) {
             case "wing_flight" -> executeWingFlight(player, free);
             case "feather_ward" -> executeFeatherWard(player, free);
             case "sky_feather_rain" -> executeSkyFeatherRain(player, free);
@@ -83,6 +96,18 @@ public final class SpellExecutor {
             case "claw_rend" -> executeClawRend(player, free);
             default -> false;
         };
+        if (success && spell.cooldownTicks() > 0) {
+            SpellCooldowns.set(player, spellId, spell.cooldownTicks());
+        }
+        return success;
+    }
+
+    /** 冷却中提示（actionbar，含剩余秒数）。 */
+    private static void sendCooldown(ServerPlayerEntity player, Spell spell, int remainingTicks) {
+        int seconds = Math.max(1, (int) Math.ceil(remainingTicks / 20.0));
+        player.sendMessage(Text.translatable(
+                "message.chronicles_of_lost_arcana.spell_cooldown",
+                Text.translatable(spell.nameKey()), seconds), true);
     }
 
     /**

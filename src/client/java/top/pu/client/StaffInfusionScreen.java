@@ -153,7 +153,8 @@ public class StaffInfusionScreen extends Screen {
             context.drawTextWithShadow(this.textRenderer, name, cx + 8, y + 4, 0xE8F2FF);
             String cost = spell.crystalCost() + "◆";
             context.drawTextWithShadow(this.textRenderer, cost,
-                    cx + cardWidth - this.textRenderer.getWidth(cost) - 5, y + 4, 0xFF7FDFFF);        }
+                    cx + cardWidth - this.textRenderer.getWidth(cost) - 5, y + 4, 0xFF7FDFFF);
+        }
     }
 
     private void renderHint(DrawContext context, int px, int py) {

@@ -6,13 +6,17 @@ package top.pu.mana;
 
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import top.pu.item.AngelStaffItem;
 import top.pu.network.CoLANetwork;
+import top.pu.spell.SpellCooldowns;
 import top.pu.spell.Spells;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -96,6 +100,7 @@ public final class ManaManager {
      * 每个服务器 tick 调用：魔力自然恢复 + 按固定间隔把数据同步到客户端（用于 HUD）。
      */
     public static void tickSync(MinecraftServer server) {
+        SpellCooldowns.tick(server);
         tickRegen(server);
         if (server.getTicks() % SYNC_INTERVAL_TICKS != 0) {
             return;
@@ -135,7 +140,23 @@ public final class ManaManager {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(mana);
         buf.writeInt(crystals);
+        // 手持创天使法杖时附带选中法术的剩余冷却 ticks（0 = 无冷却），供 HUD 显示
+        buf.writeVarInt(getStaffCooldownRemaining(player));
         ServerPlayNetworking.send(player, CoLANetwork.MANA_SYNC_S2C, buf);
+    }
+
+    /** 手持创天使法杖时其选中法术的剩余冷却 ticks（0 = 未持法杖/无冷却）。 */
+    private static int getStaffCooldownRemaining(ServerPlayerEntity player) {
+        ItemStack stack = player.getMainHandStack();
+        if (!(stack.getItem() instanceof AngelStaffItem staff)) {
+            return 0;
+        }
+        int selected = AngelStaffItem.getSelected(stack);
+        List<String> list = AngelStaffItem.getInfusions(stack);
+        if (selected < 0 || selected >= list.size()) {
+            return 0;
+        }
+        return SpellCooldowns.remainingTicks(player, list.get(selected));
     }
 
     /**
