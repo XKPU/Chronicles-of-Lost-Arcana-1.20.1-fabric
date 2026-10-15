@@ -17,7 +17,7 @@ public final class StaffScrollHandler {
 
     /** 上一帧 alt 是否按下（沿检测）。 */
     private static boolean prevAlt = false;
-    /** 滚轮累积（1 格 = 120 单位）。 */
+    /** 滚轮累积（GLFW 增量，1 格 = 1.0）。 */
     private static double scrollAcc = 0;
 
     private StaffScrollHandler() {
@@ -34,19 +34,22 @@ public final class StaffScrollHandler {
             scrollAcc = 0;
             return;
         }
-        // 仅手持创天使法杖时生效
+
+        // 仅手持创天使法杖时生效（原版滚轮由 Mixin 在该情形下拦截）
         if (!(client.player.getMainHandStack().getItem() instanceof top.pu.item.AngelStaffItem)) {
             scrollAcc = 0;
             prevAlt = alt;
             return;
         }
 
-        // 鼠标滚轮增量（由 CoLAMouseMixin 镜像，1 格 = 120）
+        // 鼠标滚轮增量（由 CoLAMouseMixin 镜像，1 格 = 1.0）
         double scroll = takeScroll();
         if (alt && scroll != 0) {
             int dir = scroll > 0 ? -1 : 1; // 滚轮向上 = 上一项（与物品栏热键方向一致）
-            int current = ClientStaffState.getSelected();
-            int size = ClientStaffState.getInfusions().size();
+            // 直接读手上法杖 NBT（物品随客户端同步，无需先打开过注入 UI）
+            var infusions = top.pu.item.AngelStaffItem.getInfusions(client.player.getMainHandStack());
+            int current = top.pu.item.AngelStaffItem.getSelected(client.player.getMainHandStack());
+            int size = infusions.size();
             if (size > 0) {
                 int next = ((current < 0 ? 0 : current) + dir + size) % size;
                 sendSelect(next);
@@ -56,13 +59,13 @@ public final class StaffScrollHandler {
     }
 
     private static double takeScroll() {
-        // 滚轮增量由 CoLAMouseMixin 镜像到 CoLAMouseHooks
+        // 滚轮增量由 CoLAMouseMixin 镜像到 CoLAMouseHooks（GLFW 原始增量，1 格 = 1.0）
         double v = CoLAMouseHooks.consumeScroll();
         if (v != 0) {
             scrollAcc += v;
-            double steps = Math.floor(scrollAcc / 120.0);
+            double steps = Math.floor(scrollAcc);
             if (steps != 0) {
-                scrollAcc -= steps * 120.0;
+                scrollAcc -= steps;
                 return steps;
             }
         }

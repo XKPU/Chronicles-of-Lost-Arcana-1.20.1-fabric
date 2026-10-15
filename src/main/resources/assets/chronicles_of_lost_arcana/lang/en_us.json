@@ -4,6 +4,8 @@
   "item.chronicles_of_lost_arcana.angel_staff.lore2": "Shift+right-click to open infusion (costs Arcane Crystal Shards).",
   "item.chronicles_of_lost_arcana.arcane_crystal_item": "Arcane Crystal",
   "item.chronicles_of_lost_arcana.arcane_crystal_item.lore": "Eating grants 50 Arcane Crystal Shards.",
+  "item.chronicles_of_lost_arcana.angel_mana_potion": "Archangel Mana Potion",
+  "item.chronicles_of_lost_arcana.angel_mana_potion.lore": "Eating instantly restores 50 mana.",
   "itemgroup.chronicles_of_lost_arcana.magic": "Magic",
 
   "effect.chronicles_of_lost_arcana.wing_flight": "Wing of the Second Rank",

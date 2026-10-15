@@ -5,6 +5,8 @@
 package top.pu.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import top.pu.spell.ModEntities;
 
 /**
  * Chronicles of Lost Arcana 客户端入口。
@@ -24,5 +26,8 @@ public class CoLAClient implements ClientModInitializer {
 
         // 创天使法杖：alt+滚轮切换选中魔法
         StaffScrollHandler.register();
+
+        // 追踪羽毛实体渲染器
+        EntityRendererRegistry.register(ModEntities.TRACKING_FEATHER, TrackingFeatherRenderer::new);
     }
 }

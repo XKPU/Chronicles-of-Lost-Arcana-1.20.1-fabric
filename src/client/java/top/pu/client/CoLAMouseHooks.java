@@ -15,7 +15,7 @@ public final class CoLAMouseHooks {
     private CoLAMouseHooks() {
     }
 
-    /** Mixin 调用：记录本次滚轮增量（1 格 = 120）。 */
+    /** Mixin 调用：记录本次滚轮增量（GLFW 原始增量，1 格 = 1.0）。 */
     public static void addScroll(double vertical) {
         pendingScroll += vertical;
     }

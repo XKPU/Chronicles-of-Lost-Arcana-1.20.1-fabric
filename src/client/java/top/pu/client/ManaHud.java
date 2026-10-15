@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import top.pu.item.AngelStaffItem;
 import top.pu.spell.Spell;
@@ -65,10 +66,12 @@ public final class ManaHud {
                 x + (BAR_WIDTH - tw) / 2, y + (BAR_HEIGHT - 8) / 2, TEXT_COLOR);
 
         // 手持创天使法杖：上方显示选中魔法与冷却剩余
+        // 数据优先读手上法杖 NBT（物品本身随客户端同步，无需先打开过注入 UI）
         ClientPlayerEntity player = client.player;
         if (player.getMainHandStack().getItem() instanceof AngelStaffItem) {
-            int selected = ClientStaffState.getSelected();
-            var infusions = ClientStaffState.getInfusions();
+            ItemStack staff = player.getMainHandStack();
+            var infusions = AngelStaffItem.getInfusions(staff);
+            int selected = AngelStaffItem.getSelected(staff);
             String label;
             if (selected < 0 || infusions.isEmpty()) {
                 label = Text.translatable("hud.chronicles_of_lost_arcana.no_spell").getString();

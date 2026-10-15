@@ -36,6 +36,15 @@ public final class ModItems {
                             .alwaysEdible()
                             .build())));
 
+    /** 创天使魔力药水：食用立刻恢复 50 点魔力（不超过上限），仅创造获取。 */
+    public static final Item ANGEL_MANA_POTION = register("angel_mana_potion",
+            new AngelManaPotionItem(new Item.Settings()
+                    .maxCount(16)
+                    .rarity(Rarity.RARE)
+                    .food(new net.minecraft.item.FoodComponent.Builder()
+                            .alwaysEdible()
+                            .build())));
+
     /** 自定义创造模式物品组：魔法（图标用法杖）。 */
     public static final ItemGroup MAGIC_GROUP = FabricItemGroup.builder()
                     .displayName(Text.translatable("itemgroup.chronicles_of_lost_arcana.magic"))
@@ -43,6 +52,7 @@ public final class ModItems {
                     .entries((context, entries) -> {
                         entries.add(ANGEL_STAFF);
                         entries.add(ARCANE_CRYSTAL_ITEM);
+                        entries.add(ANGEL_MANA_POTION);
                     })
                     .build();
 

@@ -9,8 +9,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -22,7 +24,7 @@ import net.minecraft.world.World;
  * 追踪羽毛（翼·第四位阶·天羽倾落）：发射后追踪最近的有效目标，
  * 按飞行物结算伤害，可被地形拦截。
  */
-public class TrackingFeatherEntity extends ProjectileEntity {
+public class TrackingFeatherEntity extends ProjectileEntity implements FlyingItemEntity {
 
     /** 飞行速度（格/tick）。 */
     private static final double SPEED = 0.8;
@@ -58,6 +60,12 @@ public class TrackingFeatherEntity extends ProjectileEntity {
             TrackingFeatherEntity feather = new TrackingFeatherEntity(owner.getWorld(), owner);
             owner.getWorld().spawnEntity(feather);
         }
+    }
+
+    /** 渲染用展示贴图（FlyingItemEntity 要求，指向羽毛实体贴图）。 */
+    @Override
+    public ItemStack getStack() {
+        return net.minecraft.item.Items.FEATHER.getDefaultStack();
     }
 
     @Override
