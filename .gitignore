@@ -10,7 +10,7 @@ bin/
 
 # Test files
 .venv/
-python/
+*.py
 
 # IDEA files
 out/
