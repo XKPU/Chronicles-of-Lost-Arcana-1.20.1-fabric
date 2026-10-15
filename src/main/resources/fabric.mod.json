@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "chronicles_of_lost_arcana",
+  "version": "${version}",
+  "name": "Chronicles of Lost Arcana",
+  "description": "Chronicles of Lost Arcana modpack",
+  "authors": ["K_PU"],
+  "contact": {},
+  "license": "GPL-3.0",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "top.pu.client.CoLADataGenerator"
+    ],
+    "client": [
+      "top.pu.client.CoLAClient"
+    ],
+    "main": [
+      "top.pu.CoLA"
+    ]
+  },
+  "mixins": [
+    "chronicles_of_lost_arcana.mixins.json",
+    {
+      "config": "chronicles_of_lost_arcana.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

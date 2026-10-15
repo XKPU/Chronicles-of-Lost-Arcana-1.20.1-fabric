@@ -1,0 +1,28 @@
+{
+  "item.chronicles_of_lost_arcana.angel_staff": "Archangel Staff",
+  "item.chronicles_of_lost_arcana.angel_staff.lore1": "Right-click to cast the selected spell; Alt+Scroll to switch.",
+  "item.chronicles_of_lost_arcana.angel_staff.lore2": "Shift+right-click to open infusion (costs Arcane Crystal Shards).",
+  "itemgroup.chronicles_of_lost_arcana.magic": "Magic",
+
+  "effect.chronicles_of_lost_arcana.wing_flight": "Wing of the Seventh Rank",
+  "effect.chronicles_of_lost_arcana.wing_flight_slow_fall": "Wing Slow Fall",
+
+  "spell.chronicles_of_lost_arcana.wing_flight": "Wing of the Seventh Rank",
+  "spell.chronicles_of_lost_arcana.wing_flight.desc": "Fly freely for 60s: hold jump to ascend, release to glide down. Slow fall if it expires mid-air. Cooldown 1m30s; 5 mana; 3 Arcane Crystal Shards to infuse.",
+
+  "message.chronicles_of_lost_arcana.mana_not_enough": "Not enough mana!",
+  "message.chronicles_of_lost_arcana.crystals_not_enough": "Not enough Arcane Crystal Shards (need %s)!",
+  "message.chronicles_of_lost_arcana.already_infused": "That spell is already infused.",
+  "message.chronicles_of_lost_arcana.infusions_full": "Infusion slots full; replace a spell (no refund).",
+  "message.chronicles_of_lost_arcana.infused": "Infused: %s",
+  "message.chronicles_of_lost_arcana.no_spell_selected": "No spell selected (Shift+right-click to infuse).",
+  "message.chronicles_of_lost_arcana.cast_success": "Cast: %s",
+  "message.chronicles_of_lost_arcana.unknown_spell": "Unknown spell.",
+
+  "hud.chronicles_of_lost_arcana.no_spell": "(no spell selected)",
+  "hud.chronicles_of_lost_arcana.crystals": "Arcane Crystal Shards",
+
+  "screen.chronicles_of_lost_arcana.staff_infusion": "Archangel Staff - Spell Infusion",
+  "screen.chronicles_of_lost_arcana.empty_slot": "(empty)",
+  "screen.chronicles_of_lost_arcana.replace_hint": "When 8 slots are full, clicking a new spell replaces the selected slot; shards are not refunded."
+}
