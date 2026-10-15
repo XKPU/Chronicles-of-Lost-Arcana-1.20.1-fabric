@@ -13,6 +13,8 @@ public final class ClientStaffState {
 
     private static volatile List<String> infusions = List.of();
     private static volatile int selected = -1;
+    /** 当前选中法术的总冷却 ticks（0 = 无冷却）。 */
+    private static volatile int cooldownTicks = 0;
 
     private ClientStaffState() {
     }
@@ -26,9 +28,19 @@ public final class ClientStaffState {
         return selected >= 0 && selected < size ? selected : -1;
     }
 
+    public static int getSelectedCooldownTicks() {
+        return cooldownTicks;
+    }
+
     /** 更新注入数据（服务端权威）。 */
     public static void set(List<String> newInfusions, int newSelected) {
+        set(newInfusions, newSelected, 0);
+    }
+
+    /** 更新注入数据与选中法术冷却（服务端权威）。 */
+    public static void set(List<String> newInfusions, int newSelected, int newCooldownTicks) {
         infusions = List.copyOf(newInfusions);
         selected = newSelected;
+        cooldownTicks = Math.max(0, newCooldownTicks);
     }
 }

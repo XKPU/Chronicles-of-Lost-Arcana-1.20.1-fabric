@@ -42,9 +42,10 @@ public final class CoLAClientNetworking {
                 (client, handler, buf, responseSender) -> {
                     List<String> list = readInfusions(buf);
                     int selected = buf.readVarInt();
+                    int cooldownTicks = buf.readVarInt();
                     boolean openEditor = buf.readBoolean();
                     client.execute(() -> {
-                        ClientStaffState.set(list, selected);
+                        ClientStaffState.set(list, selected, cooldownTicks);
                         if (openEditor) {
                             openEditorScreen(client, list, selected);
                         }

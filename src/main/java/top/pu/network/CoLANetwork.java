@@ -30,6 +30,10 @@ public final class CoLANetwork {
     public static final Identifier INFUSE_SPELL_C2S =
             new Identifier(CoLA.MOD_ID, "infuse_spell");
 
+    /** C2S：替换创天使法杖指定槽位注入，payload = writeVarInt(slot) + writeString(spellId) */
+    public static final Identifier REPLACE_SPELL_C2S =
+            new Identifier(CoLA.MOD_ID, "replace_spell");
+
     /** C2S：切换创天使法杖选中魔法，payload = writeInt(slotIndex) */
     public static final Identifier SELECT_SPELL_C2S =
             new Identifier(CoLA.MOD_ID, "select_spell");

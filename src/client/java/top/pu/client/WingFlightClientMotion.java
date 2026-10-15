@@ -18,15 +18,17 @@ import top.pu.network.CoLANetwork;
  * 翼行/缓降的客户端运动逻辑。
  *
  * <p>水平移动复用原版创造飞行模型（服务端授予 allowFlying，客户端按需
- * 开关 abilities.flying）。垂直逻辑：翼行按住空格上升、未按自动缓慢下降；
- * 缓降未按自动下降、按住空格仅允许极轻微上升。</p>
+ * 开关 abilities.flying）。垂直逻辑：翼行按住空格上升、按蹲下快速下降、
+ * 未按自动缓慢下降；缓降未按自动下降、按住空格仅允许轻微上升。</p>
  */
 public final class WingFlightClientMotion {
 
     /** 翼行未按住空格时的滑降速度（自动缓慢下降）。 */
     private static final double GLIDE_FALL_SPEED = -0.08;
+    /** 翼行按住蹲下键时的快速下降速度。 */
+    private static final double SNEAK_DIVE_SPEED = -0.55;
     /** 翼行缓降未按住空格时的下降速度。 */
-    private static final double SLOW_FALL_SPEED = -0.08;
+    private static final double SLOW_FALL_SPEED = -0.25;
     /** 翼行缓降按住空格时允许的最大上升速度（防止创造飞行点空格发射）。 */
     private static final double SLOW_FALL_JUMP_RISE_CAP = 0.05;
 
@@ -51,9 +53,10 @@ public final class WingFlightClientMotion {
 
         KeyBinding jumpKey = client.options.jumpKey;
         boolean jumping = jumpKey != null && jumpKey.isPressed();
+        boolean sneaking = client.options.sneakKey.isPressed();
 
         if (hasWingFlight) {
-            applyWingFlightMotion(player, jumping);
+            applyWingFlightMotion(player, jumping, sneaking);
         } else if (hasSlowFall) {
             applySlowFallMotion(player, jumping);
         }
@@ -70,9 +73,9 @@ public final class WingFlightClientMotion {
     /**
      * 翼行运动：创造飞行手感 + 修改升降。
      * 地面未按键 → 正常行走（不开飞行）；按空格或已在空中 → 飞行模式。
-     * 按住空格 → 原版飞行上升；未按住 → 自动收敛到滑降速度缓慢下降。
+     * 按住空格 → 原版飞行上升；按住蹲下 → 快速下降；未按 → 收敛到滑降速度缓慢下降。
      */
-    private static void applyWingFlightMotion(ClientPlayerEntity player, boolean jumping) {
+    private static void applyWingFlightMotion(ClientPlayerEntity player, boolean jumping, boolean sneaking) {
         var abilities = player.getAbilities();
         boolean airborne = !player.isOnGround();
         boolean wantFly = jumping || airborne;
@@ -84,8 +87,13 @@ public final class WingFlightClientMotion {
         }
 
         if (abilities.flying && !jumping) {
-            // 未按住空格：垂直速度收敛到滑降值
-            player.setVelocity(player.getVelocity().x, GLIDE_FALL_SPEED, player.getVelocity().z);
+            if (sneaking) {
+                // 蹲下键：快速下降
+                player.setVelocity(player.getVelocity().x, SNEAK_DIVE_SPEED, player.getVelocity().z);
+            } else {
+                // 未按住空格：垂直速度收敛到滑降值
+                player.setVelocity(player.getVelocity().x, GLIDE_FALL_SPEED, player.getVelocity().z);
+            }
         }
         // 按住空格：原版 flying 上升逻辑生效；水平移动交给原版 flying 模型。
 
@@ -93,7 +101,8 @@ public final class WingFlightClientMotion {
     }
 
     /**
-     * 翼行缓降运动：关闭飞行（若有）；未按住空格自动缓慢下降，按住空格钳制上升上限。
+     * 翼行缓降运动：关闭飞行（若有）；未按住空格自动下降（SLOW_FALL_SPEED），
+     * 按住空格仅允许轻微上升（钳制上限）。
      */
     private static void applySlowFallMotion(ClientPlayerEntity player, boolean jumping) {
         var abilities = player.getAbilities();

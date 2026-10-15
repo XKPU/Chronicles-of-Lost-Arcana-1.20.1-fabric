@@ -197,6 +197,13 @@ public class AngelStaffItem extends Item {
                 buf.writeString(id);
             }
             buf.writeVarInt(getSelected(stack));
+            // 选中法术的总冷却 ticks（HUD 显示剩余时间用）
+            int cd = 0;
+            int sel = getSelected(stack);
+            if (sel >= 0 && sel < list.size()) {
+                cd = Spells.byId(list.get(sel)).map(Spell::cooldownTicks).orElse(0);
+            }
+            buf.writeVarInt(cd);
             buf.writeBoolean(openEditor);
             ServerPlayNetworking.send(player, CoLANetwork.STAFF_SYNC_S2C, buf);
         }

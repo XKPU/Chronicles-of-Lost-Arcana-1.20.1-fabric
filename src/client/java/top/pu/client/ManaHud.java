@@ -65,7 +65,7 @@ public final class ManaHud {
         context.drawTextWithShadow(client.textRenderer, text,
                 x + (BAR_WIDTH - tw) / 2, y + (BAR_HEIGHT - 8) / 2, TEXT_COLOR);
 
-        // 手持创天使法杖：上方显示选中魔法
+        // 手持创天使法杖：上方显示选中魔法与冷却剩余
         ClientPlayerEntity player = client.player;
         if (player.getMainHandStack().getItem() instanceof AngelStaffItem) {
             int selected = ClientStaffState.getSelected();
@@ -80,6 +80,19 @@ public final class ManaHud {
             }
             context.drawTextWithShadow(client.textRenderer, Text.literal(label),
                     x, y - 12, SPELL_COLOR);
+
+            // 冷却中：名称右侧追加灰色剩余秒数
+            var cooldown = player.getItemCooldownManager();
+            int totalTicks = ClientStaffState.getSelectedCooldownTicks();
+            if (totalTicks > 0 && cooldown.isCoolingDown(player.getMainHandStack().getItem())) {
+                float progress = cooldown.getCooldownProgress(
+                        player.getMainHandStack().getItem(), tickDelta);
+                int remainSeconds = Math.max(1,
+                        (int) Math.ceil(progress * totalTicks / 20.0F));
+                String cd = " (" + remainSeconds + "s)";
+                context.drawTextWithShadow(client.textRenderer, Text.literal(cd),
+                        x + client.textRenderer.getWidth(label), y - 12, 0xFFAAAAAA);
+            }
         }
     }
 }

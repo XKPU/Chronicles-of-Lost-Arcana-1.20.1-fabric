@@ -43,6 +43,14 @@ public final class CoLAServerNetworking {
                     server.execute(() -> handleInfuse(player, spellId));
                 });
 
+        // C2S：替换创天使法杖指定槽位注入
+        ServerPlayNetworking.registerGlobalReceiver(CoLANetwork.REPLACE_SPELL_C2S,
+                (server, player, handler, buf, responseSender) -> {
+                    int slot = buf.readVarInt();
+                    String spellId = buf.readString(256);
+                    server.execute(() -> handleReplace(player, slot, spellId));
+                });
+
         // C2S：切换创天使法杖选中魔法
         ServerPlayNetworking.registerGlobalReceiver(CoLANetwork.SELECT_SPELL_C2S,
                 (server, player, handler, buf, responseSender) -> {
@@ -76,5 +84,14 @@ public final class CoLAServerNetworking {
             return;
         }
         AngelStaffItem.select(player, stack, slot);
+    }
+
+    /** 手持创天使法杖时替换指定槽位注入（不返还残晶）。 */
+    private static void handleReplace(ServerPlayerEntity player, int slot, String spellId) {
+        ItemStack stack = player.getMainHandStack();
+        if (!(stack.getItem() instanceof AngelStaffItem)) {
+            return;
+        }
+        AngelStaffItem.replace(player, stack, slot, spellId);
     }
 }

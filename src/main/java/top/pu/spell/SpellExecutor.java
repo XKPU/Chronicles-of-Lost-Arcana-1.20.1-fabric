@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import top.pu.item.AngelStaffItem;
 import top.pu.mana.ManaManager;
 
 /**
@@ -41,7 +40,7 @@ public final class SpellExecutor {
         // 施加翼行效果（覆盖旧的同名效果，重新计时）
         player.addStatusEffect(new StatusEffectInstance(
                 ModStatusEffects.WING_FLIGHT, WING_FLIGHT_DURATION_TICKS, 0,
-                false, true, true));
+                false, false, true));
         player.getWorld().playSound(null, player.getBlockPos(),
                 SoundEvents.ENTITY_ENDER_DRAGON_FLAP, SoundCategory.PLAYERS, 0.8F, 1.2F);
         ManaManager.sendCastSuccess(player, spell.nameKey());
@@ -51,7 +50,7 @@ public final class SpellExecutor {
     /**
      * 通过法术 id 执行（供 CastSpellC2S / 法杖右键调用）。
      *
-     * @param stack 法杖物品（非 null 时校验残晶需求并按法术冷却设置物品 CD）
+     * @param stack 法杖物品（非 null 时按法术冷却设置物品 CD；残晶仅在注入时消耗）
      */
     public static boolean execute(ServerPlayerEntity player, String spellId, ItemStack stack) {
         Spell spell = Spells.byId(spellId).orElse(null);
@@ -59,12 +58,7 @@ public final class SpellExecutor {
             return false;
         }
         boolean free = stack == null;
-        // 法杖释放：校验奥术残晶需求
-        if (!free && stack.getItem() instanceof AngelStaffItem
-                && !ManaManager.tryConsumeCrystals(player, spell.crystalCost())) {
-            ManaManager.sendNotEnoughCrystals(player, spell.crystalCost());
-            return false;
-        }
+        // 残晶仅在注入时消耗，释放法术不消耗
         boolean success = switch (spellId) {
             case "wing_flight" -> executeWingFlight(player, free);
             default -> false;

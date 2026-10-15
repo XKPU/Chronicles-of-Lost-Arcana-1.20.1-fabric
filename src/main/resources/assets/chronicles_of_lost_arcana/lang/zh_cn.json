@@ -24,5 +24,6 @@
 
   "screen.chronicles_of_lost_arcana.staff_infusion": "创天使法杖 · 魔法注入",
   "screen.chronicles_of_lost_arcana.empty_slot": "（空槽位）",
-  "screen.chronicles_of_lost_arcana.replace_hint": "注入满 8 个后，点击新魔法将替换当前选中的槽位，且不返还残晶。"
+  "screen.chronicles_of_lost_arcana.replace_hint": "注入满 8 个后，点击槽位选中替换目标，再点击右侧魔法替换（不返还残晶）。",
+  "screen.chronicles_of_lost_arcana.replace_pick": "已选中槽位 %s，点击右侧魔法完成替换（不返还残晶）。"
 }

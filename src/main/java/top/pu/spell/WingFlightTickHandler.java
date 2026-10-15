@@ -70,7 +70,7 @@ public final class WingFlightTickHandler {
             if (remaining <= 1) {
                 player.addStatusEffect(new StatusEffectInstance(
                         ModStatusEffects.WING_FLIGHT_SLOW_FALL,
-                        StatusEffectInstance.INFINITE, 0, false, true, true));
+                        StatusEffectInstance.INFINITE, 0, false, false, true));
                 revokeFlying(player);
             }
         } else {

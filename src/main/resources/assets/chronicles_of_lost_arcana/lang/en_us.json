@@ -24,5 +24,6 @@
 
   "screen.chronicles_of_lost_arcana.staff_infusion": "Archangel Staff - Spell Infusion",
   "screen.chronicles_of_lost_arcana.empty_slot": "(empty)",
-  "screen.chronicles_of_lost_arcana.replace_hint": "When 8 slots are full, clicking a new spell replaces the selected slot; shards are not refunded."
+  "screen.chronicles_of_lost_arcana.replace_hint": "When 8 slots are full, click a slot to pick a replace target, then click a spell on the right (no refund).",
+  "screen.chronicles_of_lost_arcana.replace_pick": "Slot %s picked; click a spell on the right to replace (no refund)."
 }
