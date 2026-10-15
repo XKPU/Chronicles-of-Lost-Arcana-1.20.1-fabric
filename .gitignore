@@ -8,8 +8,13 @@
 build/
 bin/
 
-# IntelliJ
+# Test files
+.venv/
+python/
+
+# IDEA files
 out/
+.vscode/
 .idea/
 *.iml
 # mpeltonen/sbt-idea plugin
