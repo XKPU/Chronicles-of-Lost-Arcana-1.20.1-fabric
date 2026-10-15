@@ -14,6 +14,7 @@ import top.pu.mana.ManaManager;
 import top.pu.network.CoLAServerNetworking;
 import top.pu.network.JumpStateTracker;
 import top.pu.spell.ArcaneCrystals;
+import top.pu.spell.ModEntities;
 import top.pu.spell.ModStatusEffects;
 import top.pu.spell.WingFlightTickHandler;
 
@@ -32,6 +33,9 @@ public class CoLA implements ModInitializer {
 
         // 注册：物品（两把法杖）与创造模式物品组（魔法）
         ModItems.init();
+
+        // 注册：实体（追踪羽毛）
+        ModEntities.init();
 
         // 注册：服务端网络接收器（C2S：cast_spell / jump_state）
         CoLAServerNetworking.register();

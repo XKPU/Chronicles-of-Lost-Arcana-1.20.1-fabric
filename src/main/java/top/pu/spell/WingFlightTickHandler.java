@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <p>飞行复用原版创造飞行模型：服务端授予 {@code abilities.allowFlying}，
  * 客户端按需开关 {@code abilities.flying}（见 {@code WingFlightClientMotion}）。
- * 翼行落地不清除，自然到期施加无限时翼行缓降；缓降触地清除。</p>
+ * 翼行落地不清除，自然到期或受到非摔落伤害时立即施加无限时翼行缓降；缓降触地清除。</p>
  */
 public final class WingFlightTickHandler {
 
@@ -40,6 +40,7 @@ public final class WingFlightTickHandler {
             }
         });
         // 翼行/缓降期间免疫摔落伤害（服务端兜底，客户端另有 fallDistance=0）
+        // 翼行期间受到其他伤害：立即终止翼行并转入翼行缓降
         ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
             if (entity instanceof ServerPlayerEntity player
                     && source.isOf(DamageTypes.FALL)
@@ -47,8 +48,23 @@ public final class WingFlightTickHandler {
                     || player.hasStatusEffect(ModStatusEffects.WING_FLIGHT_SLOW_FALL))) {
                 return false;
             }
+            if (entity instanceof ServerPlayerEntity player
+                    && player.hasStatusEffect(ModStatusEffects.WING_FLIGHT)) {
+                endWingFlight(player);
+            }
             return true;
         });
+    }
+
+    /**
+     * 立即终止翼行：移除效果、收回飞行能力并施加无限时翼行缓降。
+     */
+    private static void endWingFlight(ServerPlayerEntity player) {
+        player.removeStatusEffect(ModStatusEffects.WING_FLIGHT);
+        player.addStatusEffect(new StatusEffectInstance(
+                ModStatusEffects.WING_FLIGHT_SLOW_FALL,
+                StatusEffectInstance.INFINITE, 0, false, false, true));
+        revokeFlying(player);
     }
 
     private static void tickPlayer(ServerPlayerEntity player) {
@@ -68,10 +84,7 @@ public final class WingFlightTickHandler {
 
             // 自然到期 → 施加翼行缓降并收回飞行能力
             if (remaining <= 1) {
-                player.addStatusEffect(new StatusEffectInstance(
-                        ModStatusEffects.WING_FLIGHT_SLOW_FALL,
-                        StatusEffectInstance.INFINITE, 0, false, false, true));
-                revokeFlying(player);
+                endWingFlight(player);
             }
         } else {
             // 效果已不在：收回本系统授予的飞行能力

@@ -28,7 +28,7 @@ public class StaffInfusionScreen extends Screen {
     private static final int PANEL_WIDTH = 246;
     private static final int PANEL_HEIGHT = 176;
     private static final int SLOT_SIZE = 20;
-    private static final int CARD_HEIGHT = 24;
+    private static final int CARD_HEIGHT = 16;
     /** 面板配色（深蓝调）。 */
     private static final int PANEL_BG = 0xF010101C;
     private static final int PANEL_BORDER = 0xFF5B7FC7;
@@ -153,8 +153,7 @@ public class StaffInfusionScreen extends Screen {
             context.drawTextWithShadow(this.textRenderer, name, cx + 8, y + 4, 0xE8F2FF);
             String cost = spell.crystalCost() + "◆";
             context.drawTextWithShadow(this.textRenderer, cost,
-                    cx + cardWidth - this.textRenderer.getWidth(cost) - 5, y + 4, 0xFF7FDFFF);
-        }
+                    cx + cardWidth - this.textRenderer.getWidth(cost) - 5, y + 4, 0xFF7FDFFF);        }
     }
 
     private void renderHint(DrawContext context, int px, int py) {

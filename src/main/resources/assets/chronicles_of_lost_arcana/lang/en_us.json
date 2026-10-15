@@ -4,11 +4,23 @@
   "item.chronicles_of_lost_arcana.angel_staff.lore2": "Shift+right-click to open infusion (costs Arcane Crystal Shards).",
   "itemgroup.chronicles_of_lost_arcana.magic": "Magic",
 
-  "effect.chronicles_of_lost_arcana.wing_flight": "Wing of the Seventh Rank",
+  "effect.chronicles_of_lost_arcana.wing_flight": "Wing of the Second Rank",
   "effect.chronicles_of_lost_arcana.wing_flight_slow_fall": "Wing Slow Fall",
 
-  "spell.chronicles_of_lost_arcana.wing_flight": "Wing of the Seventh Rank",
-  "spell.chronicles_of_lost_arcana.wing_flight.desc": "Fly freely for 60s: hold jump to ascend, release to glide down. Slow fall if it expires mid-air. Cooldown 1m30s; 5 mana; 3 Arcane Crystal Shards to infuse.",
+  "spell.chronicles_of_lost_arcana.wing_flight": "Wing of the Second Rank",
+  "spell.chronicles_of_lost_arcana.wing_flight.desc": "Fly freely for 60s: hold jump to ascend, release to glide down. Slow fall if it expires mid-air. Cooldown 3m; 35 mana; 25 Arcane Crystal Shards to infuse.",
+
+  "spell.chronicles_of_lost_arcana.feather_ward": "Wing of the Fifth Rank: Feather Ward",
+  "spell.chronicles_of_lost_arcana.feather_ward.desc": "Grants yourself Absorption III (4 extra hearts) for 15s. Cooldown 90s; 12 mana; 10 Arcane Crystal Shards to infuse.",
+
+  "spell.chronicles_of_lost_arcana.sky_feather_rain": "Wing of the Fourth Rank: Sky Feather Rain",
+  "spell.chronicles_of_lost_arcana.sky_feather_rain.desc": "Lock-on: rains 7 homing feathers, each hit dealing 1.5 damage (blocked by terrain). Cooldown 35s; 16 mana; 7 Arcane Crystal Shards to infuse.",
+
+  "spell.chronicles_of_lost_arcana.beloved_wing": "Wing of the Sixth Rank: My Wing's Beloved",
+  "spell.chronicles_of_lost_arcana.beloved_wing.desc": "Lock-on: grants the player you are looking at Absorption II for 8s. Cooldown 60s; 10 mana; 4 Arcane Crystal Shards to infuse.",
+
+  "spell.chronicles_of_lost_arcana.claw_rend": "Claw of the Fifth Rank: Rend",
+  "spell.chronicles_of_lost_arcana.claw_rend.desc": "Deals 4.5 damage and knocks back targets within 4.5 blocks in a 90° arc, with a claw swipe effect. Cooldown 23s; 11 mana; 8 Arcane Crystal Shards to infuse.",
 
   "message.chronicles_of_lost_arcana.mana_not_enough": "Not enough mana!",
   "message.chronicles_of_lost_arcana.crystals_not_enough": "Not enough Arcane Crystal Shards (need %s)!",

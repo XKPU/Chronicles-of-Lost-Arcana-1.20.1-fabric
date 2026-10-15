@@ -5,6 +5,7 @@
 package top.pu.spell;
 
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -18,8 +19,6 @@ public final class SpellExecutor {
 
     /** 翼行效果时长：60 秒 = 1200 ticks。 */
     public static final int WING_FLIGHT_DURATION_TICKS = 1200;
-    /** 法杖使用冷却：1 秒。 */
-    public static final int STAFF_COOLDOWN_TICKS = 20;
 
     private SpellExecutor() {
     }
@@ -61,6 +60,10 @@ public final class SpellExecutor {
         // 残晶仅在注入时消耗，释放法术不消耗
         boolean success = switch (spellId) {
             case "wing_flight" -> executeWingFlight(player, free);
+            case "feather_ward" -> executeFeatherWard(player, free);
+            case "sky_feather_rain" -> executeSkyFeatherRain(player, free);
+            case "beloved_wing" -> executeBelovedWing(player, free);
+            case "claw_rend" -> executeClawRend(player, free);
             default -> false;
         };
         if (success && stack != null && spell.cooldownTicks() > 0) {
@@ -74,7 +77,76 @@ public final class SpellExecutor {
     public static boolean execute(ServerPlayerEntity player, String spellId, boolean free) {
         return switch (spellId) {
             case "wing_flight" -> executeWingFlight(player, free);
+            case "feather_ward" -> executeFeatherWard(player, free);
+            case "sky_feather_rain" -> executeSkyFeatherRain(player, free);
+            case "beloved_wing" -> executeBelovedWing(player, free);
+            case "claw_rend" -> executeClawRend(player, free);
             default -> false;
         };
+    }
+
+    /**
+     * 释放翼·第五位阶·羽庇：自身获得原版伤害吸收 III（十五秒）。
+     */
+    private static boolean executeFeatherWard(ServerPlayerEntity player, boolean free) {
+        Spell spell = Spells.FEATHER_WARD;
+        if (!free && !ManaManager.tryConsume(player, spell.manaCost())) {
+            ManaManager.sendNotEnoughMana(player);
+            return false;
+        }
+        player.addStatusEffect(new StatusEffectInstance(
+                StatusEffects.ABSORPTION, 20 * 15, 2, false, true, true));
+        player.getWorld().playSound(null, player.getBlockPos(),
+                SoundEvents.ENTITY_ALLAY_ITEM_GIVEN, SoundCategory.PLAYERS, 0.9F, 0.8F);
+        ManaManager.sendCastSuccess(player, spell.nameKey());
+        return true;
+    }
+
+    /**
+     * 释放翼·第四位阶·天羽倾落：向前方发射七枚追踪羽毛（锁定技）。
+     */
+    private static boolean executeSkyFeatherRain(ServerPlayerEntity player, boolean free) {
+        Spell spell = Spells.SKY_FEATHER_RAIN;
+        if (!free && !ManaManager.tryConsume(player, spell.manaCost())) {
+            ManaManager.sendNotEnoughMana(player);
+            return false;
+        }
+        TrackingFeatherEntity.salvo(player, 7);
+        ManaManager.sendCastSuccess(player, spell.nameKey());
+        return true;
+    }
+
+    /**
+     * 释放翼·第六位阶·吾羽翼之所爱：对准星玩家施加原版伤害吸收 II（八秒）。
+     */
+    private static boolean executeBelovedWing(ServerPlayerEntity player, boolean free) {
+        Spell spell = Spells.BELOVED_WING;
+        if (!free && !ManaManager.tryConsume(player, spell.manaCost())) {
+            ManaManager.sendNotEnoughMana(player);
+            return false;
+        }
+        ServerPlayerEntity target = Targeting.raycastPlayer(player);
+        if (target != null) {
+            target.addStatusEffect(new StatusEffectInstance(
+                    StatusEffects.ABSORPTION, 20 * 8, 1, false, true, true));
+            target.getWorld().playSound(null, target.getBlockPos(),
+                    SoundEvents.ENTITY_ALLAY_ITEM_GIVEN, SoundCategory.PLAYERS, 0.9F, 1.2F);
+        }
+        ManaManager.sendCastSuccess(player, spell.nameKey());
+        return true;
+    }
+
+    /**
+     * 释放爪·第五位阶·撕裂：前方 4.5 格 90° 锥形范围伤害（4.5 点）+ 爪击特效。
+     */
+    private static boolean executeClawRend(ServerPlayerEntity player, boolean free) {
+        Spell spell = Spells.CLAW_REND;
+        if (!free && !ManaManager.tryConsume(player, spell.manaCost())) {
+            ManaManager.sendNotEnoughMana(player);
+            return false;
+        }
+        ClawRendEffect.sweep(player, 4.5F, 4.5F, 90.0F);
+        ManaManager.sendCastSuccess(player, spell.nameKey());
+        return true;
     }
 }

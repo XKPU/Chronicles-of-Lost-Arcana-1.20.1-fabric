@@ -4,11 +4,23 @@
   "item.chronicles_of_lost_arcana.angel_staff.lore2": "Shift+右键打开注入界面（注入消耗奥术残晶）。",
   "itemgroup.chronicles_of_lost_arcana.magic": "魔法",
 
-  "effect.chronicles_of_lost_arcana.wing_flight": "翼·第七位阶·翼行",
+  "effect.chronicles_of_lost_arcana.wing_flight": "翼·第二位阶·翼行",
   "effect.chronicles_of_lost_arcana.wing_flight_slow_fall": "翼行缓降",
 
-  "spell.chronicles_of_lost_arcana.wing_flight": "翼·第七位阶·翼行",
-  "spell.chronicles_of_lost_arcana.wing_flight.desc": "60 秒内自由飞行：按住空格上升，松开缓慢滑降。到期未落地则进入缓降。冷却 1 分 30 秒；魔力消耗 5；注入需奥术残晶×3。",
+  "spell.chronicles_of_lost_arcana.wing_flight": "翼·第二位阶·翼行",
+  "spell.chronicles_of_lost_arcana.wing_flight.desc": "60 秒内自由飞行：按住空格上升，松开缓慢滑降。到期未落地则进入缓降。冷却 3 分钟；魔力消耗 35；注入需奥术残晶×25。",
+
+  "spell.chronicles_of_lost_arcana.feather_ward": "翼·第五位阶·羽庇",
+  "spell.chronicles_of_lost_arcana.feather_ward.desc": "自身获得伤害吸收 III（4 颗额外吸收心），持续 15 秒。冷却 90 秒；魔力消耗 12；注入需奥术残晶×10。",
+
+  "spell.chronicles_of_lost_arcana.sky_feather_rain": "翼·第四位阶·天羽倾落",
+  "spell.chronicles_of_lost_arcana.sky_feather_rain.desc": "锁定技：向目标方向倾泻 7 枚追踪羽毛，每枚命中造成 1.5 点伤害（可被地形拦截）。冷却 35 秒；魔力消耗 16；注入需奥术残晶×7。",
+
+  "spell.chronicles_of_lost_arcana.beloved_wing": "翼·第六位阶·吾羽翼之所爱",
+  "spell.chronicles_of_lost_arcana.beloved_wing.desc": "锁定技：为注视的玩家施加伤害吸收 II，持续 8 秒。冷却 60 秒；魔力消耗 10；注入需奥术残晶×4。",
+
+  "spell.chronicles_of_lost_arcana.claw_rend": "爪·第五位阶·撕裂",
+  "spell.chronicles_of_lost_arcana.claw_rend.desc": "对前方 4.5 格、90° 范围内的目标造成 4.5 点伤害并将其击退，附带爪击特效。冷却 23 秒；魔力消耗 11；注入需奥术残晶×8。",
 
   "message.chronicles_of_lost_arcana.mana_not_enough": "魔力不足！",
   "message.chronicles_of_lost_arcana.crystals_not_enough": "奥术残晶不足（需要 %s）！",

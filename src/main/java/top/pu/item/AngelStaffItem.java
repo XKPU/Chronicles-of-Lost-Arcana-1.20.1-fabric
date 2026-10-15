@@ -152,10 +152,8 @@ public class AngelStaffItem extends Item {
                 return TypedActionResult.success(stack, world.isClient());
             }
             String spellId = list.get(selected);
-            boolean success = SpellExecutor.execute(serverPlayer, spellId, stack);
-            if (success) {
-                user.getItemCooldownManager().set(this, SpellExecutor.STAFF_COOLDOWN_TICKS);
-            }
+            // 冷却由 SpellExecutor.execute 按法术设置
+            SpellExecutor.execute(serverPlayer, spellId, stack);
             return TypedActionResult.success(stack, world.isClient());
         }
 
