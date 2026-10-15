@@ -8,6 +8,9 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import top.pu.CoLA;
@@ -29,7 +32,7 @@ public final class ModItems {
             new ArcaneCrystalItem(new Item.Settings()
                     .maxCount(16)
                     .rarity(Rarity.RARE)
-                    .food(new net.minecraft.component.type.FoodComponent.Builder()
+                    .food(new net.minecraft.item.FoodComponent.Builder()
                             .alwaysEdible()
                             .build())));
 

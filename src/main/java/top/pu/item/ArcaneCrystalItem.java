@@ -33,7 +33,7 @@ public class ArcaneCrystalItem extends Item {
         if (user instanceof ServerPlayerEntity serverPlayer) {
             ManaManager.addCrystals(serverPlayer, CRYSTAL_AMOUNT);
             serverPlayer.getItemCooldownManager().set(this, USE_COOLDOWN_TICKS);
-            if (!serverPlayer.getAbilities().instaBuild) {
+            if (!serverPlayer.getAbilities().creativeMode) {
                 stack.decrement(1);
             }
         }

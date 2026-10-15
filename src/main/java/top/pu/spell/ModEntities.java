@@ -5,6 +5,7 @@
 package top.pu.spell;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -18,8 +19,8 @@ public final class ModEntities {
     public static final EntityType<TrackingFeatherEntity> TRACKING_FEATHER = Registry.register(
             Registries.ENTITY_TYPE,
             new Identifier(CoLA.MOD_ID, "tracking_feather"),
-            EntityType.Builder.<TrackingFeatherEntity>create(TrackingFeatherEntity::new, EntityType.MISC)
-                    .dimensions(0.25F, 0.25F)
+            EntityType.Builder.<TrackingFeatherEntity>create(TrackingFeatherEntity::new, SpawnGroup.MISC)
+                    .setDimensions(0.25F, 0.25F)
                     .trackingTickInterval(4)
                     .build("tracking_feather"));
 
