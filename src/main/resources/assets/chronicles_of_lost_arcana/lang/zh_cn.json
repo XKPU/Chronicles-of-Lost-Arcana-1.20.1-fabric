@@ -34,6 +34,7 @@
   "message.chronicles_of_lost_arcana.no_spell_selected": "尚未选中魔法（Shift+右键注入）。",
   "message.chronicles_of_lost_arcana.cast_success": "释放成功：%s",
   "message.chronicles_of_lost_arcana.spell_cooldown": "%s 冷却中（剩余 %s 秒）",
+  "message.chronicles_of_lost_arcana.no_target": "未锁定目标。",
   "message.chronicles_of_lost_arcana.unknown_spell": "未知的法术。",
 
   "hud.chronicles_of_lost_arcana.no_spell": "（未选中魔法）",

@@ -219,6 +219,11 @@ public final class ManaManager {
         player.sendMessage(Text.translatable("message.chronicles_of_lost_arcana.no_spell_selected"), true);
     }
 
+    /** 未锁定目标提示（actionbar，锁定技专用）。 */
+    public static void sendNoTarget(ServerPlayerEntity player) {
+        player.sendMessage(Text.translatable("message.chronicles_of_lost_arcana.no_target"), true);
+    }
+
     /**
      * 释放成功提示（actionbar）。
      */

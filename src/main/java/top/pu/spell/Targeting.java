@@ -4,6 +4,7 @@
  */
 package top.pu.spell;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
@@ -18,6 +19,19 @@ final class Targeting {
     private static final double LOCK_RANGE = 64.0;
 
     private Targeting() {
+    }
+
+    /**
+     * 取玩家准星指向的生物（视线射线检测，限 LivingEntity），无则返回 null。
+     */
+    static LivingEntity raycastLiving(ServerPlayerEntity player) {
+        Vec3d eye = player.getEyePos();
+        Vec3d end = eye.add(player.getRotationVector().multiply(LOCK_RANGE));
+        EntityHitResult hit = net.minecraft.entity.projectile.ProjectileUtil.raycast(
+                player, eye, end, player.getBoundingBox().expand(LOCK_RANGE),
+                e -> e instanceof LivingEntity && e.isAlive() && e != player,
+                LOCK_RANGE * LOCK_RANGE);
+        return hit != null && hit.getEntity() instanceof LivingEntity living ? living : null;
     }
 
     /**

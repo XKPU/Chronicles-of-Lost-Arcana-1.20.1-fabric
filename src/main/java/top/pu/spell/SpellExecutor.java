@@ -4,6 +4,7 @@
  */
 package top.pu.spell;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
@@ -128,35 +129,44 @@ public final class SpellExecutor {
     }
 
     /**
-     * 释放翼·第四位阶·天羽倾落：向前方发射七枚追踪羽毛（锁定技）。
+     * 释放翼·第四位阶·天羽倾落：向前方发射七枚追踪羽毛（锁定技，需锁定生物/玩家）。
      */
     private static boolean executeSkyFeatherRain(ServerPlayerEntity player, boolean free) {
         Spell spell = Spells.SKY_FEATHER_RAIN;
+        // 锁定技：准星未指向生物不消耗、不进冷却
+        LivingEntity locked = Targeting.raycastLiving(player);
+        if (locked == null) {
+            ManaManager.sendNoTarget(player);
+            return false;
+        }
         if (!free && !ManaManager.tryConsume(player, spell.manaCost())) {
             ManaManager.sendNotEnoughMana(player);
             return false;
         }
-        TrackingFeatherEntity.salvo(player, 7);
+        TrackingFeatherEntity.salvo(player, 7, locked.getUuid());
         ManaManager.sendCastSuccess(player, spell.nameKey());
         return true;
     }
 
     /**
-     * 释放翼·第六位阶·吾羽翼之所爱：对准星玩家施加原版伤害吸收 II（八秒）。
+     * 释放翼·第六位阶·吾羽翼之所爱：对准星玩家施加原版伤害吸收 II（八秒，锁定技需锁定玩家）。
      */
     private static boolean executeBelovedWing(ServerPlayerEntity player, boolean free) {
         Spell spell = Spells.BELOVED_WING;
+        // 锁定技：未锁定玩家不消耗、不进冷却
+        ServerPlayerEntity target = Targeting.raycastPlayer(player);
+        if (target == null) {
+            ManaManager.sendNoTarget(player);
+            return false;
+        }
         if (!free && !ManaManager.tryConsume(player, spell.manaCost())) {
             ManaManager.sendNotEnoughMana(player);
             return false;
         }
-        ServerPlayerEntity target = Targeting.raycastPlayer(player);
-        if (target != null) {
-            target.addStatusEffect(new StatusEffectInstance(
-                    StatusEffects.ABSORPTION, 20 * 8, 1, false, true, true));
-            target.getWorld().playSound(null, target.getBlockPos(),
-                    SoundEvents.ENTITY_ALLAY_ITEM_GIVEN, SoundCategory.PLAYERS, 0.9F, 1.2F);
-        }
+        target.addStatusEffect(new StatusEffectInstance(
+                StatusEffects.ABSORPTION, 20 * 8, 1, false, true, true));
+        target.getWorld().playSound(null, target.getBlockPos(),
+                SoundEvents.ENTITY_ALLAY_ITEM_GIVEN, SoundCategory.PLAYERS, 0.9F, 1.2F);
         ManaManager.sendCastSuccess(player, spell.nameKey());
         return true;
     }
